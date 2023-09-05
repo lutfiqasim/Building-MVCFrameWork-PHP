@@ -1,0 +1,19 @@
+{
+    "name": "lutfi/phpmvc-frameworklearn",
+    "description": "building a simple mvc framwork inorder to better understand the design pattern",
+    "autoload": {
+            "psr-4":{
+                "app\\" : "./"
+            }
+    },
+    "authors": [
+        {
+            "name": "lutfiqasim",
+            "email": "lutfiqasim2002@gmail.com"
+        }
+    ],
+    "require": {}
+
+     
+}
+
