@@ -1,6 +1,7 @@
 <?php
 
 namespace app\core;
+
 /**
  * Summary of Application
  * @author Lutfi 
@@ -20,19 +21,22 @@ class Application
     public Database $db;
     public Controller $controller;
 
+    public Session $session;
+
     public static Application $app;
-   
+
     /**
      * Summary of __construct
      * @param mixed $rootPath
      */
-    public function __construct($rootPath,array $config)
+    public function __construct($rootPath, array $config)
     {
         self::$app = $this;
         self::$ROOT_DIR = $rootPath;
         $this->request = new Request();
         $this->response = new Response();
-        $this->router = new Router($this->request,$this->response);
+        $this->session = new Session();
+        $this->router = new Router($this->request, $this->response);
         $this->db = new Database($config['db']);
     }
 
@@ -45,7 +49,7 @@ class Application
     {
         return $this->controller;
     }
-    public function setController(\app\core\Controller $controller):void
+    public function setController(\app\core\Controller $controller): void
     {
         $this->controller = $controller;
     }
