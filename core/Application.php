@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use Exception;
+
 /**
  * Summary of Application
  * @author Lutfi 
@@ -15,7 +17,7 @@ class Application
      * @var Router
      */
     public static string $ROOT_DIR;
-
+    // public string $layout = 'main';
     public string $userClass;
     public Router $router;
     public Request $request;
@@ -52,12 +54,23 @@ class Application
             $this->user = null;
         }
     }
-    public static function isGuest(){
+    public static function isGuest()
+    {
         return !self::$app->user;
     }
     public function run()
     {
-        echo $this->router->resolve();
+        try {
+            echo $this->router->resolve();
+        } catch (Exception $e) {
+            $this->response->setStatusCode(404);
+            echo $this->router->renderView(
+                '_error',
+                [
+                    'exception' => $e
+                ]
+            );
+        }
     }
 
     public function getController(): \app\core\Controller
@@ -81,9 +94,7 @@ class Application
 
     public function logout()
     {
-        $this->uesrr = null;
+        $this->user = null;
         $this->session->remove('user');
     }
-
-    
 }

@@ -1,4 +1,5 @@
 <?php
+
 use app\Controllers\SiteController;
 use app\Controllers\AuthController;
 use app\core\Application;
@@ -28,8 +29,8 @@ $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
 $app->router->get('/register', [AuthController::class, 'register']);
 $app->router->post('/register', [AuthController::class, 'register']);
+$app->router->get('/profile', [AuthController::class, 'profile']);
 //for best practice logout should be post method not get
 //To update later
 $app->router->get('/logout', [AuthController::class, 'logout']);
-
 $app->run();
