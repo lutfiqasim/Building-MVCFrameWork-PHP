@@ -78,20 +78,20 @@ abstract class Model
                     $ruleName = $rule[0];
                 }
                 if ($ruleName === self::RULE_REQUIRED && !$value) {
-                    $this->addError($attribute, self::RULE_REQUIRED);
+                    $this->addErrorForRule($attribute, self::RULE_REQUIRED);
                 }
                 if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                    $this->addError($attribute, self::RULE_EMAIL);
+                    $this->addErrorForRule($attribute, self::RULE_EMAIL);
                 }
                 if ($ruleName === self::RULE_MIN && strlen($value) < $rule['min']) {
-                    $this->addError($attribute, self::RULE_MIN, $rule);
+                    $this->addErrorForRule($attribute, self::RULE_MIN, $rule);
                 }
                 if ($ruleName === self::RULE_MAX && strlen($value) > $rule['max']) {
-                    $this->addError($attribute, self::RULE_MAX, $rule);
+                    $this->addErrorForRule($attribute, self::RULE_MAX, $rule);
                 }
                 if ($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}) {
                     $rule['match'] = $this->getLabel($rule['match']);
-                    $this->addError($attribute, self::RULE_MATCH, $rule);
+                    $this->addErrorForRule($attribute, self::RULE_MATCH, $rule);
                 }
 
                 if ($ruleName === self::RULE_UNIQUE) {
@@ -101,11 +101,11 @@ abstract class Model
                     $tableName = $className::tableName();
                     $sql = "SELECT * FROM $tableName WHERE $uniqueAttr = :attr";
                     $statement = Application::$app->db->prepare($sql);
-                    $statement->bindParam(":attr", $value,\PDO::PARAM_STR);
+                    $statement->bindParam(":attr", $value, \PDO::PARAM_STR);
                     $statement->execute();
                     $record = $statement->fetchObject();
                     if ($record) {
-                        $this->addError($attribute, self::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
+                        $this->addErrorForRule($attribute, self::RULE_UNIQUE, ['field' => $this->getLabel($attribute)]);
                     }
                 }
             }
@@ -114,7 +114,7 @@ abstract class Model
     }
 
     /**
-     * Summary of addError
+     * Summary of addErrorForRule
      * Add an error message for a specific attribute.
      *
      * @param string $attribute
@@ -122,7 +122,7 @@ abstract class Model
      * @param mixed $params
      * @return void
      */
-    private function addError(string $attribute, string $rule, $params = [])
+    private function addErrorForRule(string $attribute, string $rule, $params = [])
     {
         $message = $this->errorMessages()[$rule] ?? "";
         foreach ($params as $key => $value) {
@@ -130,7 +130,17 @@ abstract class Model
         }
         $this->errors[$attribute][] = $message;
     }
-
+    /**
+     * Summary of addError
+     * @param string $attribute
+     * @param string $message
+     * @return void
+     * Add error without rules
+     */
+    protected function addError(string $attribute, string $message)
+    {
+        $this->errors[$attribute][] = $message;
+    }
     /**
      * Summary of errorMessages
      * Define error messages for validation rules.
