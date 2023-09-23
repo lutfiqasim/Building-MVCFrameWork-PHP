@@ -7,6 +7,10 @@
  */
 
 use app\core\Application;
+/**
+ *  @var $user app\models\User  
+ * 
+*/
 ?>
 <!doctype html>
 <html lang="en">
@@ -19,7 +23,7 @@ use app\core\Application;
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title><?php echo $this->title;?> </title>
 </head>
 
 <body>
@@ -53,7 +57,10 @@ use app\core\Application;
                         <a class="nav-link" href="/profile">profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/logout">Welcome <?php echo Application::$app->user->getDisplayName() ?>
+                        <a class="nav-link" href="/logout">Welcome <?php 
+                        $user = Application::$app->user;
+                        echo $user->getDisplayName() 
+                        ?>
                             (logout)
                         </a>
                     </li>

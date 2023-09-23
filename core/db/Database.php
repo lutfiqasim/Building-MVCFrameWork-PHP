@@ -3,7 +3,8 @@
 /**
  *  User: Lutfi
  */
-namespace app\core;
+namespace app\core\db;
+use app\core\Application;
 
 /**
  * Class Database

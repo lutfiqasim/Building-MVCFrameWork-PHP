@@ -1,5 +1,6 @@
 <?php
 /** @var $model \app\models\User */
+$this->title='Login';
 ?>
 <h1>LogIn</h1>
 <?php $form = \app\core\form\Form::begin('', 'post') ?>

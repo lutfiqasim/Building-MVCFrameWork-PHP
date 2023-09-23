@@ -11,6 +11,7 @@ use app\core\exception\NotFoundException;
  */
 class Router
 {
+
     protected array $routes = [];
     public Request $request;
     public Response $response;
@@ -73,39 +74,11 @@ class Router
         }
         return call_user_func($callback, $this->request, $this->response);
     }
-
+    //can be removed and replaced with a Application::$app->view->renderView at its references
+    //For clear implementation 
     public function renderView($view, $params = [])
     {
-        $layoutContent = $this->layoutContent();
-        $viewContent = $this->renderOnlyView($view, $params);
-        return str_replace('{{content}}', $viewContent, $layoutContent);
-        // include_once Application::$ROOT_DIR ."/views/$view.php";
-
-    }
-    public function renderContent($viewContent)
-    {
-        $layoutContent = $this->layoutContent();
-        return str_replace('{{content}}', $viewContent, $layoutContent);
-        // include_once Application::$ROOT_DIR ."/views/$view.php";
-
+        return Application::$app->view->renderView($view,$params);
     }
 
-    protected function layoutContent()
-    {
-        $layout = Application::$app->controller->layout ?? 'main';
-        ob_Start();
-        include_once Application::$ROOT_DIR . "/views/layouts/$layout.php";
-        return ob_get_clean();
-    }
-
-    protected function renderOnlyView($view, $params = [])
-    {
-        foreach ($params as $key => $value) {
-            //This variable name will be evaluated to the value name
-            $$key = $value;
-        }
-        ob_Start();
-        include_once Application::$ROOT_DIR . "/views/$view.php";
-        return ob_get_clean();
-    }
 }
